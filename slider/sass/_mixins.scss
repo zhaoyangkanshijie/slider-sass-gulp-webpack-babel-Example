@@ -1,0 +1,157 @@
+@import "./_config.scss";
+
+@mixin center($width: null, $height: null) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  @supports(transform: translate(-50%, -50%)) {//浏览器支持时执行
+    transform: translate(-50%, -50%);
+  }
+  @supports not(transform: translate(-50%, -50%)){
+    width: $width;
+    height: $height;
+    margin: -($width / 2) #{0 0} -($height / 2);
+  }
+}
+
+
+@mixin childrenCenter {
+  @supports(display: flex){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@mixin breakpoint-set($breakpoints, $name) {
+    @if map-has-key($breakpoints, $name) {
+        @if length(map-get($breakpoints, $name)) > 1 {
+            $queries: map-get($breakpoints, $name);
+            $media-condition: '';
+
+            @each $key, $value in $queries {
+                    $media-query: '(' + $key + ': ' + $value + ')';
+                    $media-condition: $media-condition + $media-query;
+                @if index(map-keys($queries), $key) != length($queries) {
+                    $media-condition: $media-condition + ' and ';
+                }
+                @media #{$media} {
+                    @content;
+                }
+            }
+
+            @media #{inspect(map-get($breakpoints, $name))} {
+                @content;
+            }
+        }
+        @else {
+            @warn "Couldn't find a breakpoint named `#{$name}`.";
+        }
+    }
+}
+
+//map https://www.cnblogs.com/whqet/p/Sassmap.html
+//     函数	                      功能	                                  示例
+// map-keys(map)	      返回map里面所有的key(list)	   map-keys(("foo": 1, "bar": 2)) => "foo", "bar"
+// map-values(map)	    返回map里面所有的value(list)	 map-values(("foo": 1, "bar": 2)) => 1, 2
+// map-get(map,key)	    返回map里面指定可以的value	   map-get(("foo": 1, "bar": 2), "foo") => 1
+// map-has-key(map,key)	返回map里面是否含有指定的key	  map-has-key(("foo": 1, "bar": 2), "foo") => true
+// map-merge(map1,map2)	合并map(map)	              map-merge(("foo": 1), ("bar": 2)) => ("foo": 1, "bar": 2)
+// map-remove(map,keys)	删除指定map中的指定key(map)	  map-remove(("foo": 1, "bar": 2), "bar") => ("foo": 1)
+// keywords(args)	      返回一个函数参数组成的map(map)	@mixin foo(args...){@debug keywords($args); => (arg1: val, arg2: val)}
+
+//例如传入(min-width: 1440px)
+@mixin media($queries) {
+  @if length($queries) == 0 {//直到所有映射被移除，长度为0，则输出content
+    @content;
+  } @else {
+    $first-key: nth(map-keys($queries), 1);//得到min-width
+
+    @media ($first-key: map-get($queries, $first-key)/*得到1440px*/) {
+      $queries: map-remove($queries, $first-key);//移除此条映射
+
+      @include media($queries) {//继续查找其它映射是否符合条件
+        @content;
+      }
+    }
+  }
+}
+
+//例如传入“large”
+@mixin respond-to($breakpoint) {
+  //获取到 (min-width: 1440px)，仍然是map类型
+  $queries: map-get($breakpoints, $breakpoint);
+  @if not $queries {
+    @error "No value could be retrieved from `#{$breakpoint}`. "
+    + "Please make sure it is defined in `$breakpoints` map.";
+  }
+  @include media($queries) {
+    @content;//respond-to{content}，content如和h3字体大小、行高
+  }
+}
+
+%clearfix {
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+    overflow: hidden;
+  }
+}
+
+// px转换为rem
+@function pxToRem($px, $base: 750px) {
+    $min: 1 / $base * 10 * 1;
+    $result: $px / $base * 10 * 1;
+
+    @if $result < 0.027 and $result > 0 {
+        @return 2px;
+    }
+
+    @else {
+        @return $px / $base * 10 * 1rem;
+    }
+
+}
+
+// 设置dpr下的字体大小
+@mixin font-dpr($font-size, $line-height: $font-size) {
+    font-size: $font-size / 2;
+
+    @if $line-height != none {
+        line-height: $line-height / 2;
+    }
+
+    [data-dpr="2"] & {
+        font-size: $font-size;
+
+        @if $line-height != none {
+            line-height: $line-height;
+        }
+    }
+
+    [data-dpr="3"] & {
+        font-size: $font-size * 3 / 2;
+
+        @if $line-height != none {
+            line-height: $line-height * 3 / 2;
+        }
+    }
+}
+
+// 设置dpr下的图片
+@mixin img-dpr($url, $pattern) {
+    background-image: url($url);
+
+    [data-dpr="2"] & {
+        background-image: url(str-replace-first($url, $pattern, '@2x' + $pattern));
+    }
+
+    [data-dpr="3"] & {
+        background-image: url(str-replace-first($url, $pattern, '@3x' + $pattern));
+    }
+}

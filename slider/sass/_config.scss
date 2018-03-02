@@ -1,0 +1,14 @@
+$font-family: "Noto Sans CJK SC", "Source Han Sans CN", "Microsoft YaHei";
+
+$breakpoints: (
+    'mobile': (max-width: 640px),
+    'pad': (min-width: 640px),
+	'notebook': (min-width: 640px, max-width: 1440px + 1px),
+    'small': (min-width: 890px),
+    'medium': (min-width: 1024px),
+    'large': (min-width: 1440px),
+    'huge': (min-width: 1920px, max-width: 2560px),
+    'x-huge': (min-width: 2560px)
+);
+
+$nav-height: 60px;
