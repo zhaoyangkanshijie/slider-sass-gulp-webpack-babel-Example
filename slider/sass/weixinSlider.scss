@@ -38,15 +38,15 @@ $slideNumber:5;
 					h3.title{
 						font-weight: bold;
 						text-align:left;
-						font-size: 48px;
-						line-height: 58px;
-						
+						font-size: pxToRem(96px);
+						line-height: pxToRem(115px);
+						margin: pxToRem(86px) 0 0 pxToRem(70px);
 					}
 					.line2{
-						font-size: 18px;
-						line-height: 24px;
+						font-size: pxToRem(24px);
+						line-height: pxToRem(36px);
 						text-align:left;
-						
+						margin: pxToRem(24px) 0 0 pxToRem(70px);
 					}
 					
 					.black-button{
@@ -60,11 +60,12 @@ $slideNumber:5;
 					}
 					
 					.info-link{
-						height:36px;
-						width:86px;
-						border-radius: 2px;
+						height:pxToRem(48px);
+						width:pxToRem(112px);
+						border-radius: pxToRem(2px);
 						text-align:center;
 						cursor:pointer;
+						margin: pxToRem(36px) 0 0 pxToRem(70px);
 
 						&:hover{
 							opacity:0.85;
@@ -73,8 +74,8 @@ $slideNumber:5;
 					}
 					
 					.knowMore{
-						font-size:14px;
-						line-height:36px;
+						font-size:pxToRem(18px);
+						line-height:pxToRem(48px);
 						
 					}
 						
@@ -91,54 +92,32 @@ $slideNumber:5;
 	}
 	
 	.weixin-slider-btn{
-		position:absolute;
-		top:50%;
-		margin-top:-40px;
-		width:60px;
-		height:80px;
-		cursor: pointer;
-	
-		&.weixin-slider-prev {
-			left: 0;
-			opacity:1;
-			background-image:url(../images/prev.png);
-			z-index: 99;
-			visibility:hidden;
-			
-			&:hover{
-				opacity:0.5;
-			}
-		}
-		
-		&.weixin-slider-next {
-			right: 0;
-			opacity:1;
-			background-image:url(../images/next.png);
-			z-index: 99;
-			visibility:hidden;
-			
-			&:hover{
-				opacity:0.5;
-			}
-		}
+		position: fixed;
+		height:pxToRem(60px);
+		width:pxToRem(102px);
+		background:url(../images/down.png) center no-repeat;
+		background-size: 100% 100%;
+		animation:downEff 1s infinite alternate steps(5, end);
+		bottom:5%;
+		left: 50%;
+		margin-left: pxToRem(-51px);
 	}
 	
 	.weixin-slider-ctrl {
-        position: absolute;
-        left: 50%;
-		bottom:30px;
-		z-index: 99;
+        position: fixed;
+        right: pxToRem(30px);
+		top:50%;
 		
 		span {
 			box-sizing: border-box;
-			float: left;
-			margin-right: 16px;
+			margin-bottom: 16px;
 			width: 10px;
 			height: 10px;
 			border: 1px solid #ababab;
 			border-radius: 6px;
 			background-color: #ababab;
 			cursor: pointer;
+			display: block;
 		}
 		
 		.active {
@@ -146,4 +125,21 @@ $slideNumber:5;
 			border:1px solid #ababab;
 		}
     }
+}
+
+@keyframes downEff {
+	0%{
+		opacity:0.1;
+		bottom:10%;
+		height:pxToRem(20px);
+		width:pxToRem(34px);
+		margin-left: pxToRem(-17px);
+	}
+	100%{
+		opacity:1;
+		bottom:0%;
+		height:pxToRem(60px);
+		width:pxToRem(102px);
+		margin-left: pxToRem(-51px);
+	}
 }

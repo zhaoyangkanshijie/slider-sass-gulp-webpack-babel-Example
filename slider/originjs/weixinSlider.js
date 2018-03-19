@@ -1,7 +1,7 @@
 let slideSlider = slideSlider || ($ => {
     let index = 1,//第index+1张图
 		timer = null,//轮播定时器
-        xwidth = null,//一张图的宽度
+        yheight = null,//一张图的高度
         slideLength = null,//轮播图张数
 		intervalTime = null,//轮播时间
 		playTime = null,//轮播效果时间
@@ -16,6 +16,18 @@ let slideSlider = slideSlider || ($ => {
 		}
 	}
 
+	//最后一张轮播图移动到第一张
+	let endToBegin = () => {
+		//console.log("endToBegin");
+		$('.slide-slider .slide-slides .slide-slider-list:last-child').prependTo($('.slide-slider .slide-slides'));
+	}
+
+	//第一张轮播图移动到最后一张
+	let beginToEnd = () => {
+		//console.log("beginToEnd");
+		$('.slide-slider .slide-slides .slide-slider-list:first-child').appendTo($('.slide-slider .slide-slides'));
+	}
+
 	//改变导航点样式
 	let turnTo = NavDotNumber => {
 		//console.log("turnTo"+NavDotNumber);
@@ -25,31 +37,21 @@ let slideSlider = slideSlider || ($ => {
 	//向前滑动动画
 	let prev_anim = () => {
 		//console.log("prev_anim");
-		index--;
-		judgeIndexBound();
-		fade_anim(index);
+		
 	}
 
 	//向后滑动动画
 	let next_anim = () => {
 		//console.log("next_anim");
-		index++;
-		judgeIndexBound();
-		fade_anim(index);
+		if (!$('.slide-slider .slide-slides').is(":animated")){
+
+		}
 	}
 
 	//移动到指定屏
-	let fade_anim = ScreenNumber => {
-		//console.log("fade_anim");
-		for (let i = 1; i < slideLength; i++) {
-			if(ScreenNumber == i){
-				$('.weixin-slider .weixin-slides .weixin-slider-list').eq(ScreenNumber-1).fadeIn(playTime);
-			}
-			else{
-				$('.weixin-slider .weixin-slides .weixin-slider-list').eq(i-1).fadeOut(playTime);
-			}
-		}
-		turnTo(ScreenNumber);
+	let weixin_anim = ScreenNumber => {
+		//console.log("weixin_anim");
+		
 	}
 
 	//开始轮播
@@ -78,7 +80,7 @@ let slideSlider = slideSlider || ($ => {
 		//触摸导航点
 		$('.weixin-slider .weixin-slider-ctrl span').on("touchstart",function(e) {
 			index = $('.weixin-slider-ctrl span').index($(this)) + 1;
-			fade_anim(index);
+			weixin_anim(index);
 		});
 		
 		//开始触摸时间
@@ -135,20 +137,17 @@ let slideSlider = slideSlider || ($ => {
 			playTime = data.playTime,
 			playWhenHover = data.playWhenHover;
 			slideLength = $('.weixin-slider .weixin-slides .weixin-slider-list').length;
-			xwidth = $('.weixin-slider .weixin-slides .weixin-slider-list').eq(0).width();
+			yheight = $('.weixin-slider .weixin-slides .weixin-slider-list').eq(0).height();
+			endToBegin();
 			
-			fade_anim(index);
+			weixin_anim(index);
 			autoplay();
-
-			//前后按钮点击事件
-            $('.weixin-slider .weixin-slider-prev').on("click",prev_anim);
-			$('.weixin-slider .weixin-slider-next').on("click",next_anim);
 
 			//导航点点击事件
             $('.weixin-slider .weixin-slider-ctrl span').on("click",function() {
 				index = $('.weixin-slider-ctrl span').index($(this)) + 1;
 				//console.log("nav click:"+index);
-				fade_anim(index);
+				weixin_anim(index);
 			});
 
 			//广告鼠标悬停事件：设置是否轮播
@@ -163,11 +162,11 @@ let slideSlider = slideSlider || ($ => {
 				}
 			});
 
-			touchEvent();
+			//touchEvent();
 
 			//屏幕宽度变化适应
 			$(window).resize( () =>{
-			    xwidth = $('.weixin-slider .weixin-slides .weixin-slider-list').eq(0).width();
+			    yheight = $('.weixin-slider .weixin-slides .weixin-slider-list').eq(0).height();
 			    turnTo(index);
 			});
         }
