@@ -4,9 +4,7 @@ let slideSlider = slideSlider || ($ => {
         yheight = null,//一张图的高度
         slideLength = null,//轮播图张数
 		intervalTime = null,//轮播时间
-		playTime = null,//轮播效果时间
-		playWhenHover = null;//鼠标悬停在广告上，是否轮播？
-		//tag = 0;
+		playTime = null;//轮播效果时间
 
 	//检查index是否越界
 	let judgeIndexBound = () => {
@@ -54,7 +52,7 @@ let slideSlider = slideSlider || ($ => {
 				//move->(5)1234
 				//(1)2345
 				//screen->1234(5)
-				pause();
+				
 				endToBegin();
 				setScreenTo(2);
 				$('.weixin-slider .weixin-slides').animate({
@@ -64,7 +62,7 @@ let slideSlider = slideSlider || ($ => {
 					setScreenTo(slideLength);
 					beginToEnd();
 					turnTo(index);
-					autoplay();
+					
 				});
 			}
 			else{
@@ -87,7 +85,6 @@ let slideSlider = slideSlider || ($ => {
 				//move->2345(1)
 				//1234(5)
 				//screen->(1)2345
-				pause();
 				beginToEnd();
 				setScreenTo(slideLength-1);
 				$('.weixin-slider .weixin-slides').animate({
@@ -97,8 +94,6 @@ let slideSlider = slideSlider || ($ => {
 					setScreenTo(index);
 					endToBegin();
 					turnTo(index);
-					pause();
-					autoplay();
 				});
 			}
 			else{
@@ -110,32 +105,12 @@ let slideSlider = slideSlider || ($ => {
 	//移动到指定屏
 	let move_anim = ScreenNumber => {
 		if (!$('.weixin-slider .weixin-slides').is(":animated")){//注释后，解决触屏点击没反应
-			pause();
 			//console.log("move_anim:"+ScreenNumber);
 			$('.weixin-slider .weixin-slides').animate({
 				bottom: (ScreenNumber-1) * yheight
 			}, playTime);
 			turnTo(index);
-			pause();
-			autoplay();
 		}
-	}
-
-	//开始轮播(autoplay前，立即执行pause，防止click next后，animate没执行完，就不hover，导致pause抽风)
-	let autoplay = () => {
-		//console.log("autoplay");
-		//tag++;
-		//console.log(tag);
-		timer = setInterval(next_anim,intervalTime);
-	}
-
-	//停止轮播
-	let pause = () =>  {
-		//console.log("pause");
-		//tag--;
-		//tag = tag < 0 ? 0 :tag;
-		//console.log(tag);
-		clearInterval(timer);
 	}
 
 	//手指滑动
@@ -166,7 +141,7 @@ let slideSlider = slideSlider || ($ => {
 			
 			if($('.weixin-slider .weixin-slides').is(":animated")) return;
 			touchFlag = true;
-			pause();
+			
 			startX = e.originalEvent.changedTouches[0].pageX;
 			//console.log(startX);
 			//console.log("touchstart detected!");
@@ -174,7 +149,7 @@ let slideSlider = slideSlider || ($ => {
 		
 		//触摸移动事件
 		$(".weixin-slider").on("touchmove",function(e) {
-			pause();
+			
 			//console.log(touchFlag);
 			if($('.weixin-slider .weixin-slides').is(":animated")){
 				startX = e.originalEvent.changedTouches[0].pageX;
@@ -336,22 +311,16 @@ let slideSlider = slideSlider || ($ => {
 			status = 0;
 			endX = 0;
 			//console.log("touchend detected!");
-			
-			pause();
-			autoplay();
 		});
 	}
 
 	return {
 		//初始化函数：传入设置的值
 		init: data => {
-			intervalTime = data.intervalTime,
-			playTime = data.playTime,
-			playWhenHover = data.playWhenHover;
+			intervalTime = data.intervalTime;
+			playTime = data.playTime;
 			slideLength = $('.weixin-slider .weixin-slides .weixin-slider-list').length;
 			yheight = $('.weixin-slider .weixin-slides .weixin-slider-list').eq(0).height();
-			
-			autoplay();
 
 			//向下按钮点击事件
 			$('.weixin-slider .weixin-slider-btn').on("touchstart",next_anim);
@@ -361,18 +330,6 @@ let slideSlider = slideSlider || ($ => {
 				index = $('.weixin-slider-ctrl span').index($(this)) + 1;
 				//console.log("nav click:"+index);
 				move_anim(index);
-			});
-
-			//广告鼠标悬停事件：设置是否轮播
-			$('.weixin-slider').hover(() =>{
-				if(playWhenHover == false){
-					pause();
-				}
-			},() =>{
-				if(playWhenHover == false){
-					pause();
-					autoplay();
-				}
 			});
 
 			touchEvent();

@@ -373,8 +373,8 @@ let slideSlider = slideSlider || ($ => {
 	return {
 		//初始化函数：传入设置的值
 		init: data => {
-			intervalTime = data.intervalTime,
-			playTime = data.playTime,
+			intervalTime = data.intervalTime;
+			playTime = data.playTime;
 			playWhenHover = data.playWhenHover;
 			slideLength = $('.slide-slider .slide-slides .slide-slider-list').length;
 			//自动设置ul和li宽度

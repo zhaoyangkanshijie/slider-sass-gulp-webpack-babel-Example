@@ -70,10 +70,14 @@ let slideSlider = slideSlider || ($ => {
 		let touchMovePercent = 0;//移动百分比
 
 		//前后按钮触摸事件
-		$('.fade-slider .fade-slider-prev').unbind("click");
-		$('.fade-slider .fade-slider-next').unbind("click");
-        $('.fade-slider .fade-slider-prev').on("touchstart",prev_anim);
-		$('.fade-slider .fade-slider-next').on("touchstart",next_anim);
+		$('.fade-slider .fade-slider-prev').on("touchstart",function(){
+			prev_anim();
+			$('.fade-slider .fade-slider-prev').unbind("click");
+		});
+		$('.fade-slider .fade-slider-prev').on("touchstart",function(){
+			next_anim();
+			$('.fade-slider .fade-slider-next').unbind("click");
+		});
 
 		//触摸导航点
 		$('.fade-slider .fade-slider-ctrl span').on("touchstart",function(e) {
@@ -131,8 +135,8 @@ let slideSlider = slideSlider || ($ => {
 	return {
 		//初始化函数：传入设置的值
 		init: data => {
-			intervalTime = data.intervalTime,
-			playTime = data.playTime,
+			intervalTime = data.intervalTime;
+			playTime = data.playTime;
 			playWhenHover = data.playWhenHover;
 			slideLength = $('.fade-slider .fade-slides .fade-slider-list').length;
 			xwidth = $('.fade-slider .fade-slides .fade-slider-list').eq(0).width();
