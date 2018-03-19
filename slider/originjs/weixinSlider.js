@@ -52,7 +52,6 @@ let slideSlider = slideSlider || ($ => {
 				//move->(5)1234
 				//(1)2345
 				//screen->1234(5)
-				
 				endToBegin();
 				setScreenTo(2);
 				$('.weixin-slider .weixin-slides').animate({
@@ -62,7 +61,6 @@ let slideSlider = slideSlider || ($ => {
 					setScreenTo(slideLength);
 					beginToEnd();
 					turnTo(index);
-					
 				});
 			}
 			else{
@@ -76,7 +74,6 @@ let slideSlider = slideSlider || ($ => {
 		//console.log("before_next_anim:"+index);
 		if (!$('.weixin-slider .weixin-slides').is(":animated")){
 			index++;
-			console.log("index:"+index+",yheight:"+yheight);
 			//console.log("next_anim:"+index);
 			if(index > slideLength){
 				//1234(5)
@@ -138,10 +135,8 @@ let slideSlider = slideSlider || ($ => {
 		$(".weixin-slider").on("touchstart",function(e) {
 			//监测到touch行为，显示前后箭头
 			$('.weixin-slider .weixin-slider-prev,.weixin-slider .weixin-slider-next').css("visibility","visible");
-			
 			if($('.weixin-slider .weixin-slides').is(":animated")) return;
 			touchFlag = true;
-			
 			startX = e.originalEvent.changedTouches[0].pageX;
 			//console.log(startX);
 			//console.log("touchstart detected!");
@@ -149,7 +144,6 @@ let slideSlider = slideSlider || ($ => {
 		
 		//触摸移动事件
 		$(".weixin-slider").on("touchmove",function(e) {
-			
 			//console.log(touchFlag);
 			if($('.weixin-slider .weixin-slides').is(":animated")){
 				startX = e.originalEvent.changedTouches[0].pageX;
@@ -320,7 +314,11 @@ let slideSlider = slideSlider || ($ => {
 			intervalTime = data.intervalTime;
 			playTime = data.playTime;
 			slideLength = $('.weixin-slider .weixin-slides .weixin-slider-list').length;
-			yheight = $('.weixin-slider .weixin-slides .weixin-slider-list').eq(0).height();
+			window.onload = function(){
+				//防止高度获取不准确
+				yheight = $('.weixin-slider .weixin-slides .weixin-slider-list').eq(0).height();
+			};
+			
 
 			//向下按钮点击事件
 			$('.weixin-slider .weixin-slider-btn').on("touchstart",next_anim);
