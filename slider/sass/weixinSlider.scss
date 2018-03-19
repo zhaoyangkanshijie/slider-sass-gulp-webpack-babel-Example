@@ -93,6 +93,16 @@ $slideNumber:5;
 	
 	.weixin-slider-btn{
 		position: fixed;
+		height:pxToRem(200px);
+		width:pxToRem(200px);
+		bottom:0%;
+		left: 50%;
+		margin-left: pxToRem(-100px);
+		z-index: 2;
+	}
+
+	.weixin-slider-down{
+		position: fixed;
 		height:pxToRem(60px);
 		width:pxToRem(102px);
 		background:url(../images/down.png) center no-repeat;
