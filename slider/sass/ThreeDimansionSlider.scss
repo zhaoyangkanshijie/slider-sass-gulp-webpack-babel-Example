@@ -29,12 +29,13 @@
 				@extend %clearfix;
 			}
 
-			.slide-slider-item{
+			.three-dimansion-slider-item{
 				width: 100%;
-				height: 300px;
+				//height: 100%;
+				padding-bottom:percentage(832px / 1920px);
 				margin: 0 auto;
 
-				.slide-item-content{
+				.three-dimansion-item-content{
 					width: 100%;
 					height: 100%;
 
@@ -43,12 +44,65 @@
 						text-align:left;
 						font-size: 48px;
 						line-height: 58px;
+						margin:0;
+
+						@include respond-to('pad'){
+							font-size: 48px;
+							line-height: 58px;
+							padding: 40px 0 0 30px;
+						}
+						@include respond-to('small'){
+							font-size: 48px;
+							line-height: 58px;
+							padding: 40px 0 0 30px;
+						}
+						@include respond-to('medium'){
+							font-size: 48px;
+							line-height: 58px;
+							padding: 40px 0 0 30px;
+						}
+						@include respond-to('large'){
+							font-size: 96px;
+							line-height: 115px;
+							padding: 80px 0 0 70px;
+						}
+						@include respond-to('huge'){
+							font-size: 96px;
+							line-height: 115px;
+							padding: 80px 0 0 70px;
+						}
 					}
 
 					.line2{
 						font-size: 18px;
 						line-height: 24px;
 						text-align:left;
+
+						@include respond-to('pad'){
+							font-size: 18px;
+							line-height: 24px;
+							margin: 18px 0 0 30px;
+						}
+						@include respond-to('small'){
+							font-size: 18px;
+							line-height: 24px;
+							margin: 18px 0 0 30px;
+						}
+						@include respond-to('medium'){
+							font-size: 18px;
+							line-height: 24px;
+							margin: 18px 0 0 30px;
+						}
+						@include respond-to('large'){
+							font-size: 24px;
+							line-height: 36px;
+							margin: 24px 0 0 70px;
+						}
+						@include respond-to('huge'){
+							font-size: 24px;
+							line-height: 36px;
+							margin: 24px 0 0 70px;
+						}
 					}
 
 					.black-button{
@@ -71,11 +125,58 @@
 						&:hover{
 							opacity:0.85;
 						}
+
+						@include respond-to('pad'){
+							height:36px;
+							width:86px;
+							margin: 24px 0 0 30px;
+						}
+						@include respond-to('small'){
+							height:36px;
+							width:86px;
+							margin: 24px 0 0 30px;
+						}
+						@include respond-to('medium'){
+							height:36px;
+							width:86px;
+							margin: 24px 0 0 30px;
+						}
+						@include respond-to('large'){
+							height:48px;
+							width:112px;
+							margin: 36px 0 0 70px;
+						}
+						@include respond-to('huge'){
+							height:48px;
+							width:112px;
+							margin: 36px 0 0 70px;
+						}
 					}
 
 					.knowMore{
 						font-size:14px;
 						line-height:36px;
+
+						@include respond-to('pad'){
+							font-size:14px;
+							line-height:36px;
+						}
+						@include respond-to('small'){
+							font-size:14px;
+							line-height:36px;
+						}
+						@include respond-to('medium'){
+							font-size:14px;
+							line-height:36px;
+						}
+						@include respond-to('large'){
+							font-size:18px;
+							line-height:48px;
+						}
+						@include respond-to('huge'){
+							font-size:18px;
+							line-height:48px;
+						}
 					}
 
 					.white-ground {
@@ -112,4 +213,58 @@
 			padding: 5px 10px;
 		}
 	}
+
+	.three-dimansion-slider-btn{
+		position:absolute;
+		top:50%;
+		margin-top:-40px;
+		width:60px;
+		height:80px;
+		cursor: pointer;
+	
+		&.three-dimansion-slider-prev {
+			left: 0;
+			opacity:1;
+			background-image:url(../images/prev.png);
+			//visibility:hidden;
+			
+			&:hover{
+				opacity:0.5;
+			}
+		}
+		
+		&.three-dimansion-slider-next {
+			right: 0;
+			opacity:1;
+			background-image:url(../images/next.png);
+			//visibility:hidden;
+			
+			&:hover{
+				opacity:0.5;
+			}
+		}
+	}
+	
+	.three-dimansion-slider-ctrl {
+        position: absolute;
+        left: 50%;
+		bottom:30px;
+		
+		span {
+			box-sizing: border-box;
+			float: left;
+			margin-right: 16px;
+			width: 10px;
+			height: 10px;
+			border: 1px solid #ababab;
+			border-radius: 6px;
+			background-color: #ababab;
+			cursor: pointer;
+		}
+		
+		.active {
+			background-color: #ffffff;
+			border:1px solid #ababab;
+		}
+    }
 }
