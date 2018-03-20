@@ -13,13 +13,98 @@
 <script src="js/ThreeDimansionSliderEntry.min.js"></script> -->
 <link type="text/css" rel="stylesheet" href="css/ThreeDimansionSlider.min.css"/>
 
-<div class="three-dimansion-slider" data-gap="100">
-	<ul>
-		<li><img src="images/1.jpg" alt=""></li>
-		<li><img src="images/2.jpg" alt=""></li>
-		<li><img src="images/3.jpg" alt=""></li>
-		<li><img src="images/4.jpg" alt=""></li>
-		<li><img src="images/5.jpg" alt=""></li>
+<div class="three-dimansion-slider" data-gap="120">
+	<ul class="three-dimansion-slides">
+		<li class="three-dimansion-slider-list">
+			<a href="#1" target="_blank">
+				<div class="slide-slider-item" style="background: url('images/1.jpg');">
+					<div class="slide-item-content">
+						<h3 class="white-ground title">
+							文本1111<br>文本1111
+						</h3>
+						<p class="line2 white-ground">
+							文本文本文本文本文本<br>
+							文本文本文本文本
+						</p>
+						<div class="info-link black-button">
+							<span class="knowMore">了解更多</span>
+						</div>
+					</div>
+				</div>
+			</a>
+		</li>
+		<li class="three-dimansion-slider-list">
+			<a href="#2" target="_blank">
+				<div class="slide-slider-item" style="background: url('images/2.jpg');">
+					<div class="slide-item-content">
+						<h3 class="white-ground title">
+							文本2222<br>文本2222
+						</h3>
+						<p class="line2 white-ground">
+							文本文本文本文本文本<br>
+							文本文本文本文本
+						</p>
+						<div class="info-link black-button">
+							<span class="knowMore">了解更多</span>
+						</div>
+					</div>
+				</div>
+			</a>
+		</li>
+		<li class="three-dimansion-slider-list">
+			<a href="#3" target="_blank">
+				<div class="slide-slider-item" style="background: url('images/3.jpg');">
+					<div class="slide-item-content">
+						<h3 class="white-ground title">
+							文本3333<br>文本3333
+						</h3>
+						<p class="line2 white-ground">
+							文本文本文本文本文本<br>
+							文本文本文本文本
+						</p>
+						<div class="info-link black-button">
+							<span class="knowMore">了解更多</span>
+						</div>
+					</div>
+				</div>
+			</a>
+		</li>
+		<li class="three-dimansion-slider-list">
+			<a href="#4" target="_blank">
+				<div class="slide-slider-item" style="background: url('images/4.jpg');">
+					<div class="slide-item-content">
+						<h3 class="white-ground title">
+							文本4444<br>文本4444
+						</h3>
+						<p class="line2 white-ground">
+							文本文本文本文本文本<br>
+							文本文本文本文本
+						</p>
+						<div class="info-link black-button">
+							<span class="knowMore">了解更多</span>
+						</div>
+					</div>
+				</div>
+			</a>
+		</li>
+		<li class="three-dimansion-slider-list">
+			<a href="#5" target="_blank">
+				<div class="slide-slider-item" style="background: url('images/5.jpg');">
+					<div class="slide-item-content">
+						<h3 class="white-ground title">
+							文本5555<br>文本5555
+						</h3>
+						<p class="line2 white-ground">
+							文本文本文本文本文本<br>
+							文本文本文本文本
+						</p>
+						<div class="info-link black-button">
+							<span class="knowMore">了解更多</span>
+						</div>
+					</div>
+				</div>
+			</a>
+		</li>
 	</ul>
 	<nav>
 		<button class="nav prev">Prev</button>
@@ -36,7 +121,7 @@
 		function carousel() {
 			var	gap = $('.three-dimansion-slider').data('gap') || 0,
 				bfc = $('.three-dimansion-slider').data('bfc'),
-				piclen = $('img').length,
+				piclen = $('li').length,
 				angle = 2 * Math.PI / piclen,
 				index = 0;
 
@@ -46,7 +131,7 @@
 			}
 
 			function setupCarousel() {
-				var xwidth = $('img').eq(0).width();
+				var xwidth = $('li').eq(0).width();
 				var radius = xwidth / (2 * Math.tan(Math.PI / piclen));//边心距
 
 				$('.three-dimansion-slider ul').css("transform-origin","50% 50% " + -radius + "px");
@@ -56,7 +141,7 @@
 					$('li').eq(i).css("transform", "rotateY(" + i * angle + "rad)");
 				}
 
-				if (bfc) $('img').css("backfaceVisibility", "hidden");
+				if (bfc) $('li').css("backfaceVisibility", "hidden");
 				rotateCarousel();
 			}
 
