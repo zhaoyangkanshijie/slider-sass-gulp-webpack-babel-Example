@@ -30,7 +30,7 @@ let slideSlider = slideSlider || ($ => {
 	//重置为第二屏
 	let setScreenTo = ScreenNumber => {
 		//console.log("setScreenTo"+ScreenNumber);
-		$('.weixin-slider .weixin-slides').css("bottom", -(ScreenNumber - 1) * yheight);
+		$('.weixin-slider .weixin-slides').css("bottom", (ScreenNumber - 1) * yheight);
 	}
 
 	//改变导航点样式
@@ -119,22 +119,8 @@ let slideSlider = slideSlider || ($ => {
 		let status = 0;//情况：0：重置；1：1屏向前拉，2:最后1屏向后拉，3：其余状况
 		let endX = 0;//最终移动距离
 
-		//前后按钮触摸事件
-        $('.weixin-slider .weixin-slider-prev').on("touchstart",prev_anim);
-		$('.weixin-slider .weixin-slider-next').on("touchstart",next_anim);
-
-		//触摸导航点
-		$('.weixin-slider .weixin-slider-ctrl span').on("touchstart",function(e) {
-			if(!$('.weixin-slider .weixin-slides').is(":animated")){
-				index = $('.weixin-slider-ctrl span').index($(this)) + 1;
-				move_anim(index);
-			}
-		});
-		
 		//开始触摸时间
 		$(".weixin-slider").on("touchstart",function(e) {
-			//监测到touch行为，显示前后箭头
-			$('.weixin-slider .weixin-slider-prev,.weixin-slider .weixin-slider-next').css("visibility","visible");
 			if($('.weixin-slider .weixin-slides').is(":animated")) return;
 			touchFlag = true;
 			startX = e.originalEvent.changedTouches[0].pageX;
@@ -318,16 +304,16 @@ let slideSlider = slideSlider || ($ => {
 				//防止高度获取不准确
 				yheight = $('.weixin-slider .weixin-slides .weixin-slider-list').eq(0).height();
 			};
-			
 
-			//向下按钮点击事件
+			//向下按钮触摸事件
 			$('.weixin-slider .weixin-slider-btn').on("touchstart",next_anim);
 
-			//导航点点击事件
-            $('.weixin-slider .weixin-slider-ctrl span').on("click",function() {
-				index = $('.weixin-slider-ctrl span').index($(this)) + 1;
-				//console.log("nav click:"+index);
-				move_anim(index);
+			//触摸导航点
+			$('.weixin-slider .weixin-slider-ctrl span').on("touchstart",function(e) {
+				if(!$('.weixin-slider .weixin-slides').is(":animated")){
+					index = $('.weixin-slider-ctrl span').index($(this)) + 1;
+					move_anim(index);
+				}
 			});
 
 			touchEvent();
