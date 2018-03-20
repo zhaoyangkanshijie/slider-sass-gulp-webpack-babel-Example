@@ -3,6 +3,11 @@
 
 $slideNumber:5;
 
+//解决向下滑动时，滚动导致位置不正确的问题
+html {
+	overflow: hidden;
+}
+
 .weixin-slider{
 	//width:100%;
 	//overflow:hidden;

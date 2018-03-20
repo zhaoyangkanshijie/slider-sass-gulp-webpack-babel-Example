@@ -112,19 +112,20 @@ let slideSlider = slideSlider || ($ => {
 
 	//手指滑动
 	let touchEvent = () => {
-		let startX = 0;//触摸开始位置
-		let changeX = 0;//移动距离
+		let startY = 0;//触摸开始位置
+		let changeY = 0;//移动距离
 		let touchFlag = false;//是否触摸
 		let touchMovePercent = 0;//移动百分比
 		let status = 0;//情况：0：重置；1：1屏向前拉，2:最后1屏向后拉，3：其余状况
-		let endX = 0;//最终移动距离
+		let endY = 0;//最终移动距离
 
 		//开始触摸时间
 		$(".weixin-slider").on("touchstart",function(e) {
+			
 			if($('.weixin-slider .weixin-slides').is(":animated")) return;
 			touchFlag = true;
-			startX = e.originalEvent.changedTouches[0].pageX;
-			//console.log(startX);
+			startY = e.originalEvent.changedTouches[0].screenY;
+			//console.log("startY:"+startY);
 			//console.log("touchstart detected!");
 		});
 		
@@ -132,15 +133,16 @@ let slideSlider = slideSlider || ($ => {
 		$(".weixin-slider").on("touchmove",function(e) {
 			//console.log(touchFlag);
 			if($('.weixin-slider .weixin-slides').is(":animated")){
-				startX = e.originalEvent.changedTouches[0].pageX;
+				startY = e.originalEvent.changedTouches[0].screenY;
 				return;
 			}
 			if(touchFlag == false){
-				startX = e.originalEvent.changedTouches[0].pageX;
+				startY = e.originalEvent.changedTouches[0].screenY;
 				touchFlag = true;
 			}
-			changeX = e.originalEvent.changedTouches[0].pageX - startX;
-			touchMovePercent = changeX / window.innerWidth *100;
+			//console.log("e.originalEvent.changedTouches[0].screenY:"+e.originalEvent.changedTouches[0].screenY);
+			changeY = e.originalEvent.changedTouches[0].screenY - startY;
+			touchMovePercent = changeY / yheight *100;
 			if(index == 1){
 				//只要是1，预先把last放到前面，5(1)234
 				if(status != 1){
@@ -150,7 +152,7 @@ let slideSlider = slideSlider || ($ => {
 				}
 				if(!$('.weixin-slider .weixin-slides').is(":animated")){
 					$('.weixin-slider .weixin-slides').animate({
-						bottom: -yheight+changeX
+						bottom: yheight-changeY
 					},0);
 				}
 			}
@@ -163,7 +165,7 @@ let slideSlider = slideSlider || ($ => {
 				}
 				if(!$('.weixin-slider .weixin-slides').is(":animated")){
 					$('.weixin-slider .weixin-slides').animate({
-						bottom: (2-slideLength)*yheight+changeX
+						bottom: (slideLength-2)*yheight-changeY
 					},0);
 				}
 			}
@@ -173,13 +175,13 @@ let slideSlider = slideSlider || ($ => {
 				}
 				if(!$('.weixin-slider .weixin-slides').is(":animated")){
 					$('.weixin-slider .weixin-slides').animate({
-						bottom: (1-index)*yheight+changeX
+						bottom: (index-1)*yheight-changeY
 					},0);
 				}
 			}
-			//console.log(changeX);
-			endX = changeX;
-			//console.log(touchMovePercent);
+			//console.log("changeY:"+changeY);
+			endY = changeY;
+			//console.log("touchMovePercent:"+touchMovePercent);
 			//console.log("touchmove detected!");
 		});
 		
@@ -187,7 +189,7 @@ let slideSlider = slideSlider || ($ => {
 		$(".weixin-slider").on("touchend",function(e) {
 			if($('.weixin-slider .weixin-slides').is(":animated")) return;
 			touchFlag = false;
-			if(touchMovePercent >= 20){
+			if(touchMovePercent >= 5){
 				//向前翻页
 				if(status == 1){
 					//console.log("向前翻页,status=1");
@@ -196,7 +198,7 @@ let slideSlider = slideSlider || ($ => {
 					//(1)2345
 					//screen->1234(5)
 					$('.weixin-slider .weixin-slides').animate({
-						bottom: (1 - index) * yheight
+						bottom: (index-1) * yheight
 					}, playTime,() =>{
 						index = slideLength;
 						beginToEnd();
@@ -210,7 +212,7 @@ let slideSlider = slideSlider || ($ => {
 					//position->1234(5-x)
 					//move->123(4)5
 					endToBegin();
-					$('.weixin-slider .weixin-slides').css("bottom", -(slideLength - 1) * yheight + endX);
+					$('.weixin-slider .weixin-slides').css("bottom", (slideLength - 1) * yheight - endY);
 					index--;
 					move_anim(index);
 				}
@@ -220,7 +222,7 @@ let slideSlider = slideSlider || ($ => {
 					index--;
 					move_anim(index);
 				}
-			}else if(touchMovePercent <= -20){
+			}else if(touchMovePercent <= -5){
 				//向后翻页
 				if(status == 1){
 					//console.log("向后翻页,status=1");
@@ -228,7 +230,7 @@ let slideSlider = slideSlider || ($ => {
 					//position->(1+x)2345
 					//move->1(2)345
 					beginToEnd();
-					$('.weixin-slider .weixin-slides').css("bottom", endX);
+					$('.weixin-slider .weixin-slides').css("bottom", -endY);
 					index++;
 					move_anim(index);
 				}
@@ -239,7 +241,7 @@ let slideSlider = slideSlider || ($ => {
 					//1234(5)
 					//screen->(1)2345
 					$('.weixin-slider .weixin-slides').animate({
-						bottom: (1 - index) * yheight
+						bottom: (index-1) * yheight
 					}, playTime,() =>{
 						index = 1;
 						endToBegin();
@@ -262,7 +264,7 @@ let slideSlider = slideSlider || ($ => {
 					//1(2)345
 					//screen->(1)2345
 					$('.weixin-slider .weixin-slides').animate({
-						bottom:  -index * yheight
+						bottom:  index * yheight
 					}, playTime,() =>{
 						beginToEnd();
 						setScreenTo(index);
@@ -275,7 +277,7 @@ let slideSlider = slideSlider || ($ => {
 					//123(4)5
 					//screen->1234(5)
 					$('.weixin-slider .weixin-slides').animate({
-						bottom:  (2-index) * yheight
+						bottom:  (index-2) * yheight
 					}, playTime,() =>{
 						endToBegin();
 						setScreenTo(index);
@@ -289,7 +291,7 @@ let slideSlider = slideSlider || ($ => {
 			}
 			touchMovePercent = 0;
 			status = 0;
-			endX = 0;
+			endY = 0;
 			//console.log("touchend detected!");
 		});
 	}
