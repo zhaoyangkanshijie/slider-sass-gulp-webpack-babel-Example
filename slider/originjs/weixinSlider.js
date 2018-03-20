@@ -1,4 +1,4 @@
-let slideSlider = slideSlider || ($ => {
+let weixinSlider = weixinSlider || ($ => {
     let index = 1,//第index+1张图
 		timer = null,//轮播定时器
         yheight = null,//一张图的高度

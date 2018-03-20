@@ -3,6 +3,6 @@ let initial = 	{
 	playTime : 400
 };
 $(() =>{
-	slideSlider.init(initial);
-	slideSliderResponsive.init();
+	weixinSlider.init(initial);
+	weixinSliderResponsive.init();
 });

@@ -1,4 +1,4 @@
-let slideSliderResponsive = slideSliderResponsive || ($ => {
+let weixinSliderResponsive = weixinSliderResponsive || ($ => {
     return {
 		//初始化函数：传入设置的值
 		init : () => {
