@@ -13,15 +13,14 @@
 <script src="js/ThreeDimansionSliderEntry.min.js"></script> -->
 <link type="text/css" rel="stylesheet" href="css/ThreeDimansionSlider.min.css"/>
 
-<h2>Eight images, with 20px gap</h2>
-<div class="carousel" data-gap="120">
-	<figure>
-		<img src="images/1.jpg" alt="">
-		<img src="images/2.jpg" alt="">
-		<img src="images/3.jpg" alt="">
-		<img src="images/4.jpg" alt="">
-		<img src="images/5.jpg" alt="">
-	</figure>
+<div class="three-dimansion-slider" data-gap="100">
+	<ul>
+		<li><img src="images/1.jpg" alt=""></li>
+		<li><img src="images/2.jpg" alt=""></li>
+		<li><img src="images/3.jpg" alt=""></li>
+		<li><img src="images/4.jpg" alt=""></li>
+		<li><img src="images/5.jpg" alt=""></li>
+	</ul>
 	<nav>
 		<button class="nav prev">Prev</button>
 		<button class="nav next">Next</button>
@@ -30,48 +29,49 @@
 
 	<script type="text/javascript">
 
-		window.onload = function(){
+		$(function(){
 			carousel();
-		}
+		});
 
 		function carousel() {
-			var n = $('img').length,
-				gap = $('.carousel').data('gap') || 0,
-				bfc = $('.carousel').data('bfc'),
-				theta = 2 * Math.PI / n,
-				currImage = 0;
+			var	gap = $('.three-dimansion-slider').data('gap') || 0,
+				bfc = $('.three-dimansion-slider').data('bfc'),
+				piclen = $('img').length,
+				angle = 2 * Math.PI / piclen,
+				index = 0;
 
-			setupCarousel(n, parseFloat($('img').eq(0).width()));
+			setupCarousel();
 			window.onresize = function(){
-				setupCarousel(n, parseFloat($('img').eq(0).width()));
+				setupCarousel();
 			}
 
-			function setupCarousel(n, s) {
-				var apothem = s / (2 * Math.tan(Math.PI / n));
-				$('.carousel figure').css("transform-origin","50% 50% " + -apothem + "px");
-				$('img').css("padding",gap + "px");
-				$('img').css("transform-origin", "50% 50% " + -apothem + "px");
-				for (i = 1; i < n; i++) {
-					$('img').eq(i).css("transform", "rotateY(" + i * theta + "rad)");
+			function setupCarousel() {
+				var xwidth = $('img').eq(0).width();
+				var radius = xwidth / (2 * Math.tan(Math.PI / piclen));//边心距
+
+				$('.three-dimansion-slider ul').css("transform-origin","50% 50% " + -radius + "px");
+				$('li').css("padding",gap + "px");
+				$('li').css("transform-origin", "50% 50% " + -radius + "px");
+				for (var i = 1; i < piclen; i++) {
+					$('li').eq(i).css("transform", "rotateY(" + i * angle + "rad)");
 				}
-				$('img').css("transform", "rotateY(" + i * theta + "rad)");
 
 				if (bfc) $('img').css("backfaceVisibility", "hidden");
-				rotateCarousel(currImage);
+				rotateCarousel();
 			}
 
 			$('.prev').on("click",function(){
-				currImage--;
-				rotateCarousel(currImage);
+				index--;
+				rotateCarousel();
 			});
 
 			$('.next').on("click", function () {
-				currImage++;
-				rotateCarousel(currImage);
+				index++;
+				rotateCarousel();
 			});
 
-			function rotateCarousel(imageIndex) {
-				$('.carousel figure').css("transform", "rotateY(" + imageIndex * -theta + "rad)");
+			function rotateCarousel() {
+				$('.three-dimansion-slider ul').css("transform", "rotateY(" + index * -angle + "rad)");
 			}
 		}
 	</script>
