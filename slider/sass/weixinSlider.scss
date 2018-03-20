@@ -112,7 +112,7 @@ html {
 		width:pxToRem(102px);
 		background:url(../images/down.png) center no-repeat;
 		background-size: 100% 100%;
-		animation:downEff 1s infinite alternate steps(5, end);
+		animation:downEff 1s infinite steps(4, end);
 		bottom:5%;
 		left: 50%;
 		margin-left: pxToRem(-51px);
