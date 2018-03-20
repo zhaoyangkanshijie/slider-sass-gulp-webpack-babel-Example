@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>three-dimansion-slider</title>
+
+</head>
+<body style="margin:0;padding:0;">
+
+<script src="js/jquery-1.12.3.min.js"></script>
+<!-- <script src="js/ThreeDimansionSlider.min.js"></script>
+<script src="js/ThreeDimansionSliderResponsive.min.js"></script>
+<script src="js/ThreeDimansionSliderEntry.min.js"></script> -->
+<link type="text/css" rel="stylesheet" href="css/ThreeDimansionSlider.min.css"/>
+
+<h2>Eight images, with 20px gap</h2>
+<div class="carousel" data-gap="120">
+	<figure>
+		<img src="images/1.jpg" alt="">
+		<img src="images/2.jpg" alt="">
+		<img src="images/3.jpg" alt="">
+		<img src="images/4.jpg" alt="">
+		<img src="images/5.jpg" alt="">
+	</figure>
+	<nav>
+		<button class="nav prev">Prev</button>
+		<button class="nav next">Next</button>
+	</nav>
+</div>
+
+	<script type="text/javascript">
+
+		window.onload = function(){
+			carousel();
+		}
+
+		function carousel() {
+			var n = $('img').length,
+				gap = $('.carousel').data('gap') || 0,
+				bfc = $('.carousel').data('bfc'),
+				theta = 2 * Math.PI / n,
+				currImage = 0;
+
+			setupCarousel(n, parseFloat($('img').eq(0).width()));
+			window.onresize = function(){
+				setupCarousel(n, parseFloat($('img').eq(0).width()));
+			}
+
+			function setupCarousel(n, s) {
+				var apothem = s / (2 * Math.tan(Math.PI / n));
+				$('.carousel figure').css("transform-origin","50% 50% " + -apothem + "px");
+				$('img').css("padding",gap + "px");
+				$('img').css("transform-origin", "50% 50% " + -apothem + "px");
+				for (i = 1; i < n; i++) {
+					$('img').eq(i).css("transform", "rotateY(" + i * theta + "rad)");
+				}
+				$('img').css("transform", "rotateY(" + i * theta + "rad)");
+
+				if (bfc) $('img').css("backfaceVisibility", "hidden");
+				rotateCarousel(currImage);
+			}
+
+			$('.prev').on("click",function(){
+				currImage--;
+				rotateCarousel(currImage);
+			});
+
+			$('.next').on("click", function () {
+				currImage++;
+				rotateCarousel(currImage);
+			});
+
+			function rotateCarousel(imageIndex) {
+				$('.carousel figure').css("transform", "rotateY(" + imageIndex * -theta + "rad)");
+			}
+		}
+	</script>
+
+</body>
+</html>
