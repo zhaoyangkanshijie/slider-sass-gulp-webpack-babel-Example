@@ -1,4 +1,4 @@
-let slideSliderResponsive = slideSliderResponsive || ($ => {
+let ThreeDimansionResponsive = ThreeDimansionResponsive || ($ => {
     return {
 		//初始化函数：传入设置的值
 		init : () => {
@@ -16,15 +16,6 @@ let slideSliderResponsive = slideSliderResponsive || ($ => {
 				}
 				$('.three-dimansion-slider .three-dimansion-slider-ctrl').css('marginLeft',setNavCtrlLeft);
 			}
-			
-			//广告鼠标悬停事件：屏幕宽度小于1440（含），不再出现
-			$('.three-dimansion-slider,.three-dimansion-slides,.three-dimansion-slider .three-dimansion-slider-next,.three-dimansion-slider .three-dimansion-slider-prev').hover(() => {
-				if($(window).width() > 1440){
-					$('.three-dimansion-slider .three-dimansion-slider-prev,.three-dimansion-slider .three-dimansion-slider-next').css("visibility","visible");
-				}
-			},() =>{
-				$('.three-dimansion-slider .three-dimansion-slider-prev,.three-dimansion-slider .three-dimansion-slider-next').css("visibility","hidden");
-			});
 			
 			fixNavCtrl();
         }

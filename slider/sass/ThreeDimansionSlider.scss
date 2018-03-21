@@ -62,9 +62,9 @@
 							padding: 40px 0 0 30px;
 						}
 						@include respond-to('large'){
-							font-size: 96px;
-							line-height: 115px;
-							padding: 80px 0 0 70px;
+							font-size: 48px;
+							line-height: 58px;
+							padding: 40px 0 0 30px;
 						}
 						@include respond-to('huge'){
 							font-size: 96px;
@@ -94,9 +94,9 @@
 							margin: 18px 0 0 30px;
 						}
 						@include respond-to('large'){
-							font-size: 24px;
-							line-height: 36px;
-							margin: 24px 0 0 70px;
+							font-size: 18px;
+							line-height: 24px;
+							margin: 18px 0 0 30px;
 						}
 						@include respond-to('huge'){
 							font-size: 24px;
@@ -142,9 +142,9 @@
 							margin: 24px 0 0 30px;
 						}
 						@include respond-to('large'){
-							height:48px;
-							width:112px;
-							margin: 36px 0 0 70px;
+							height:36px;
+							width:86px;
+							margin: 24px 0 0 30px;
 						}
 						@include respond-to('huge'){
 							height:48px;
@@ -170,8 +170,8 @@
 							line-height:36px;
 						}
 						@include respond-to('large'){
-							font-size:18px;
-							line-height:48px;
+							font-size:14px;
+							line-height:36px;
 						}
 						@include respond-to('huge'){
 							font-size:18px;
@@ -223,7 +223,7 @@
 		cursor: pointer;
 	
 		&.three-dimansion-slider-prev {
-			left: 0;
+			left: 25%;
 			opacity:1;
 			background-image:url(../images/prev.png);
 			//visibility:hidden;
@@ -234,7 +234,7 @@
 		}
 		
 		&.three-dimansion-slider-next {
-			right: 0;
+			right: 25%;
 			opacity:1;
 			background-image:url(../images/next.png);
 			//visibility:hidden;
@@ -248,7 +248,7 @@
 	.three-dimansion-slider-ctrl {
         position: absolute;
         left: 50%;
-		bottom:30px;
+		bottom:10%;
 		
 		span {
 			box-sizing: border-box;

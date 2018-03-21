@@ -1,67 +1,50 @@
-let slideSlider = slideSlider || ($ => {
-    let index = 1,//第index+1张图
-		timer = null,//轮播定时器
+let ThreeDimansionSlider = ThreeDimansionSlider || ($ => {
+	let index = 0,//第index+1张图
+		gap = 0,//轮播图之间间距
+		bfc = false,//是否隐藏背面
+		angle = 0,//轮播图之间角度
+		radius = 500,//边心距
+		perspective = 500,//透视距离
         xwidth = null,//一张图的宽度
         slideLength = null,//轮播图张数
 		intervalTime = null,//轮播时间
 		playTime = null,//轮播效果时间
-		playWhenHover = null;//鼠标悬停在广告上，是否轮播？
-		//tag = 0;
+		playWhenHover = null,//鼠标悬停在广告上，是否轮播？
+		timer = null;//轮播定时器
 
-	//箭头函数
-	// 1、对 this 的关联。函数内置 this 的值，取决于箭头函数在哪儿定义，而非箭头函数执行的上下文环境。
-	// 2 、new 不可用。箭头函数不能使用 new 关键字来实例化对象，不然会报错。
-	// 3、this 不可变。函数内置 this 不可变，在函数体内整个执行环境中为常量。
-	// 4、没有arguments对象。
+	let rotateCarousel = () => {
+		//console.log(index);
+		//index = index % 6;
+		$('.three-dimansion-slider .three-dimansion-slides').css("transform", "rotateY(" + index * -angle + "rad)");
+	}
 
-	// let sum = (num1, num2) => num1 + num2;
-	// // 等同于：
-	// let sum = let(num1, num2) {    
-	// 	return num1 + num2;
-	// };
-	// let getTempItem = id => ({
-	// 	id: id,
-	// 	name: "Temp"
-	// });
-	// // 等同于:
-	// let getTempItem = let(id) {
-	// return {
-	// 	id: id, 
-	// 	name: "Temp"
-	// 	};
-	// };
+	let setupCarousel = () => {
+		$('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list').css("padding",gap + "px");
+		if (bfc) $('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list').css("backfaceVisibility", "hidden");
+		$('.three-dimansion-slider').css("perspective",perspective+"px")
+		$('.three-dimansion-slider .three-dimansion-slides').css("transform-origin","50% 50% " + -radius + "px");
+		$('.three-dimansion-slider .three-dimansion-slides').css("transition","transform "+playTime+"s");
 
-	// 什么时候你不能使用箭头函数？
-	// 1. 定义对象方法(方法，原型)
-	// 2. 事件回调函数(button.addEventListener('click', () => {})
-	// 3. 定义构造函数const Message = (text) => {this.text = text;};
-
-
-	//检查index是否越界
-	let judgeIndexBound = () => {
-		if(index < 1){
-			index = slideLength;
-		}else if(index > slideLength){
-			index = 1;
+		$('.three-dimansion-slider-list').css("transform-origin", "50% 50% " + -radius + "px");
+		for (let i = 1; i < slideLength; i++) {
+			$('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list').eq(i).css("transform", "rotateY(" + i * angle + "rad)");
 		}
+
+		rotateCarousel();
 	}
 
-	//最后一张轮播图移动到第一张
-	let endToBegin = () => {
-		//console.log("endToBegin");
-		$('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list:last-child').prependTo($('.three-dimansion-slider .three-dimansion-slides'));
-	}
-
-	//第一张轮播图移动到最后一张
-	let beginToEnd = () => {
-		//console.log("beginToEnd");
-		$('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list:first-child').appendTo($('.three-dimansion-slider .three-dimansion-slides'));
-	}
-
-	//重置为第二屏
-	let setScreenTo = ScreenNumber => {
-		//console.log("setScreenTo"+ScreenNumber);
-		$('.three-dimansion-slider .three-dimansion-slides').css("left", -(ScreenNumber - 1) * xwidth);
+	let setData = data => {
+		gap = data.gap == undefined ? 0 : data.gap;
+		bfc = data.bfc == undefined ? false : data.bfc;
+		perspective = data.perspective == undefined ? 0 : data.perspective;
+		xwidth = $('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list').eq(0).width();
+		slideLength = $('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list').length;
+		angle = 2 * Math.PI / slideLength;
+		index = 0;
+		radius = data.radius == undefined ? xwidth / (2 * Math.tan(Math.PI / slideLength)) : data.radius;
+		intervalTime = data.intervalTime == undefined ? 10000 : data.intervalTime;
+		playTime = data.playTime == undefined ? 0.5 : data.playTime;
+		playWhenHover = data.playWhenHover == undefined ? false : data.playWhenHover;
 	}
 
 	//改变导航点样式
@@ -72,329 +55,66 @@ let slideSlider = slideSlider || ($ => {
 
 	//向前滑动动画
 	let prev_anim = () => {
-		//console.log("before_prev_anim:"+index);
-		if (!$('.three-dimansion-slider .three-dimansion-slides').is(":animated")){
-			index--;
-			//console.log("prev_anim:"+index);
-			if(index < 1){
-				//(1)2345
-				//(5)1234
-				//screen->5(1)234
-				//move->(5)1234
-				//(1)2345
-				//screen->1234(5)
-				pause();
-				endToBegin();
-				setScreenTo(2);
-				$('.three-dimansion-slider .three-dimansion-slides').animate({
-					left: 0//2屏到1屏
-				}, playTime, () => {
-					index = slideLength;
-					setScreenTo(slideLength);
-					beginToEnd();
-					turnTo(index);
-					autoplay();
-				});
-			}
-			else{
-				move_anim(index);
-			}
-		}
+		index--;
+		rotateCarousel();
+		//console.log(index);
+		turnTo(index%5+1);
 	}
 
 	//向后滑动动画
 	let next_anim = () => {
-		//console.log("before_next_anim:"+index);
-		if (!$('.three-dimansion-slider .three-dimansion-slides').is(":animated")){
-			index++;
-			//console.log("next_anim:"+index);
-			if(index > slideLength){
-				//1234(5)
-				//2345(1)
-				//screen->234(5)1
-				//move->2345(1)
-				//1234(5)
-				//screen->(1)2345
-				pause();
-				beginToEnd();
-				setScreenTo(slideLength-1);
-				$('.three-dimansion-slider .three-dimansion-slides').animate({
-					left: (1-slideLength) * xwidth
-				}, playTime, () => {
-					index = 1;
-					setScreenTo(index);
-					endToBegin();
-					turnTo(index);
-					pause();
-					autoplay();
-				});
-			}
-			else{
-				move_anim(index);
-			}
-		}
+		index++;
+		rotateCarousel();
+		//console.log(index);
+		turnTo(index%5+1);
 	}
 
 	//移动到指定屏
 	let move_anim = ScreenNumber => {
-		if (!$('.three-dimansion-slider .three-dimansion-slides').is(":animated")){//注释后，解决触屏点击没反应
-			pause();
-			//console.log("move_anim:"+ScreenNumber);
-			$('.three-dimansion-slider .three-dimansion-slides').animate({
-				left: (1 - ScreenNumber) * xwidth
-			}, playTime);
-			turnTo(index);
-			pause();
-			autoplay();
-		}
+		//console.log("ScreenNumber:"+(ScreenNumber+1));
+		//console.log("index:"+(index+1));
+		let move = (ScreenNumber-index%5)%5;
+		//console.log("move:"+move);
+		if(move > 2) index -= 5 - move;
+		else if(move < -2) index += 5 + move;
+		else index += move;
+		rotateCarousel();
+		turnTo(index%5+1);
 	}
 
-	//开始轮播(autoplay前，立即执行pause，防止click next后，animate没执行完，就不hover，导致pause抽风)
+	//开始轮播
 	let autoplay = () => {
-		//console.log("autoplay");
-		//tag++;
-		//console.log(tag);
 		timer = setInterval(next_anim,intervalTime);
 	}
 
 	//停止轮播
 	let pause = () =>  {
-		//console.log("pause");
-		//tag--;
-		//tag = tag < 0 ? 0 :tag;
-		//console.log(tag);
 		clearInterval(timer);
-	}
-
-	//手指滑动
-	let touchEvent = () => {
-		let startX = 0;//触摸开始位置
-		let changeX = 0;//移动距离
-		let touchFlag = false;//是否触摸
-		let touchMovePercent = 0;//移动百分比
-		let status = 0;//情况：0：重置；1：1屏向前拉，2:最后1屏向后拉，3：其余状况
-		let endX = 0;//最终移动距离
-
-		//前后按钮触摸事件
-        $('.three-dimansion-slider .three-dimansion-slider-prev').on("touchstart",prev_anim);
-		$('.three-dimansion-slider .three-dimansion-slider-next').on("touchstart",next_anim);
-
-		//触摸导航点
-		$('.three-dimansion-slider .three-dimansion-slider-ctrl span').on("touchstart",function(e) {
-			if(!$('.three-dimansion-slider .three-dimansion-slides').is(":animated")){
-				index = $('.three-dimansion-slider-ctrl span').index($(this)) + 1;
-				move_anim(index);
-			}
-		});
-		
-		//开始触摸时间
-		$(".three-dimansion-slider").on("touchstart",function(e) {
-			//监测到touch行为，显示前后箭头
-			$('.three-dimansion-slider .three-dimansion-slider-prev,.three-dimansion-slider .three-dimansion-slider-next').css("visibility","visible");
-			
-			if($('.three-dimansion-slider .three-dimansion-slides').is(":animated")) return;
-			touchFlag = true;
-			pause();
-			startX = e.originalEvent.changedTouches[0].pageX;
-			//console.log(startX);
-			//console.log("touchstart detected!");
-		});
-		
-		//触摸移动事件
-		$(".three-dimansion-slider").on("touchmove",function(e) {
-			pause();
-			//console.log(touchFlag);
-			if($('.three-dimansion-slider .three-dimansion-slides').is(":animated")){
-				startX = e.originalEvent.changedTouches[0].pageX;
-				return;
-			}
-			if(touchFlag == false){
-				startX = e.originalEvent.changedTouches[0].pageX;
-				touchFlag = true;
-			}
-			changeX = e.originalEvent.changedTouches[0].pageX - startX;
-			touchMovePercent = changeX / window.innerWidth *100;
-			if(index == 1){
-				//只要是1，预先把last放到前面，5(1)234
-				if(status != 1){
-					status = 1;
-					endToBegin();
-					setScreenTo(2);
-				}
-				if(!$('.three-dimansion-slider .three-dimansion-slides').is(":animated")){
-					$('.three-dimansion-slider .three-dimansion-slides').animate({
-						left: -xwidth+changeX
-					},0);
-				}
-			}
-			else if(index == slideLength){
-				//只要是last，预先把1放到后面，234(5)1
-				if(status != 2){
-					status = 2;
-					beginToEnd();
-					setScreenTo(slideLength-1);
-				}
-				if(!$('.three-dimansion-slider .three-dimansion-slides').is(":animated")){
-					$('.three-dimansion-slider .three-dimansion-slides').animate({
-						left: (2-slideLength)*xwidth+changeX
-					},0);
-				}
-			}
-			else{
-				if(status != 3){
-					status = 3;
-				}
-				if(!$('.three-dimansion-slider .three-dimansion-slides').is(":animated")){
-					$('.three-dimansion-slider .three-dimansion-slides').animate({
-						left: (1-index)*xwidth+changeX
-					},0);
-				}
-			}
-			//console.log(changeX);
-			endX = changeX;
-			//console.log(touchMovePercent);
-			//console.log("touchmove detected!");
-		});
-		
-		//触摸结束事件
-		$(".three-dimansion-slider").on("touchend",function(e) {
-			if($('.three-dimansion-slider .three-dimansion-slides').is(":animated")) return;
-			touchFlag = false;
-			if(touchMovePercent >= 20){
-				//向前翻页
-				if(status == 1){
-					//console.log("向前翻页,status=1");
-					//5(1-x)234
-					//move->(5)1234
-					//(1)2345
-					//screen->1234(5)
-					$('.three-dimansion-slider .three-dimansion-slides').animate({
-						left: (1 - index) * xwidth
-					}, playTime,() =>{
-						index = slideLength;
-						beginToEnd();
-						setScreenTo(index);
-						turnTo(index);
-					});
-				}
-				else if(status == 2){
-					//console.log("向前翻页,status=2");
-					//234(5-x)1
-					//position->1234(5-x)
-					//move->123(4)5
-					endToBegin();
-					$('.three-dimansion-slider .three-dimansion-slides').css("left", -(slideLength - 1) * xwidth + endX);
-					index--;
-					move_anim(index);
-				}
-				else{
-					//console.log("向前翻页,status=3");
-					//i->j
-					index--;
-					move_anim(index);
-				}
-			}else if(touchMovePercent <= -20){
-				//向后翻页
-				if(status == 1){
-					//console.log("向后翻页,status=1");
-					//5(1+x)234
-					//position->(1+x)2345
-					//move->1(2)345
-					beginToEnd();
-					$('.three-dimansion-slider .three-dimansion-slides').css("left", endX);
-					index++;
-					move_anim(index);
-				}
-				else if(status == 2){
-					//console.log("向后翻页,status=2");
-					//234(5+x)1
-					//move->2345(1)
-					//1234(5)
-					//screen->(1)2345
-					$('.three-dimansion-slider .three-dimansion-slides').animate({
-						left: (1 - index) * xwidth
-					}, playTime,() =>{
-						index = 1;
-						endToBegin();
-						setScreenTo(index);
-						turnTo(index);
-					});
-				}
-				else{
-					//console.log("向后翻页,status=3");
-					//i->j
-					index++;
-					move_anim(index);
-				}
-			}else{
-				//恢复原位
-				if(status == 1){
-					//console.log("恢复原位,status=1");
-					//5(1~x)234
-					//5(1)234
-					//1(2)345
-					//screen->(1)2345
-					$('.three-dimansion-slider .three-dimansion-slides').animate({
-						left:  -index * xwidth
-					}, playTime,() =>{
-						beginToEnd();
-						setScreenTo(index);
-					});
-				}
-				else if(status == 2){
-					//console.log("恢复原位,status=2");
-					//234(5~x)1
-					//234(5)1
-					//123(4)5
-					//screen->1234(5)
-					$('.three-dimansion-slider .three-dimansion-slides').animate({
-						left:  (2-index) * xwidth
-					}, playTime,() =>{
-						endToBegin();
-						setScreenTo(index);
-					});
-				}
-				else{
-					//console.log("恢复原位,status=3");
-					//i->i
-					move_anim(index);
-				}
-			}
-			touchMovePercent = 0;
-			status = 0;
-			endX = 0;
-			//console.log("touchend detected!");
-			
-			pause();
-			autoplay();
-		});
 	}
 
 	return {
 		//初始化函数：传入设置的值
 		init: data => {
-			intervalTime = data.intervalTime;
-			playTime = data.playTime;
-			playWhenHover = data.playWhenHover;
-			slideLength = $('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list').length;
-			//自动设置ul和li宽度
-			let percision = parseFloat(parseInt(100/slideLength*100000))/100000;
-			//console.log(percision);
-			$('.three-dimansion-slider .three-dimansion-slides').css("width",slideLength*100+"%");
-			$('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list').css("width",percision+"%");
-			xwidth = $('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list').eq(0).width();
-			
+			setData(data);
+			setupCarousel();
 			autoplay();
 
+			//屏幕宽度变化适应
+			window.onresize = function(){
+				// xwidth = $('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list').eq(0).width();
+				// radius = data.radius == undefined ? xwidth / (2 * Math.tan(Math.PI / slideLength)) : data.radius;
+				// index = 0;
+				// setupCarousel();
+				document.location.reload();
+			};
+
 			//前后按钮点击事件
-            $('.three-dimansion-slider .three-dimansion-slider-prev').on("click",prev_anim);
-			$('.three-dimansion-slider .three-dimansion-slider-next').on("click",next_anim);
+			$('.prev').on("click",prev_anim);
+			$('.next').on("click",next_anim);
 
 			//导航点点击事件
             $('.three-dimansion-slider .three-dimansion-slider-ctrl span').on("click",function() {
-				index = $('.three-dimansion-slider-ctrl span').index($(this)) + 1;
-				//console.log("nav click:"+index);
-				move_anim(index);
+				move_anim($('.three-dimansion-slider-ctrl span').index($(this)));
 			});
 
 			//广告鼠标悬停事件：设置是否轮播
@@ -407,15 +127,6 @@ let slideSlider = slideSlider || ($ => {
 					pause();
 					autoplay();
 				}
-			});
-
-			touchEvent();
-
-			//屏幕宽度变化适应
-			$(window).resize( () =>{
-			    xwidth = $('.three-dimansion-slider .three-dimansion-slides .three-dimansion-slider-list').eq(0).width();
-			    setScreenTo(index);
-			    turnTo(index);
 			});
         }
 	}
