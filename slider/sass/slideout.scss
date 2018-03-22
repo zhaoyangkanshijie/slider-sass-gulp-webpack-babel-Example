@@ -1,0 +1,194 @@
+html,body {
+	font: 100%/1.4em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	margin: 0 auto;
+	color: #222;
+	-webkit-text-size-adjust: none;
+	-webkit-font-smoothing: antialiased;
+}
+
+body,.panel {
+	background-color: #fff;
+}
+
+.menu {
+	background-color: #1D1F20;
+	background-image: linear-gradient(145deg, #1D1F20, #404348);
+
+	p {
+		color: #fff;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+
+.menu-header {
+	border-bottom: 1px solid #2a2d2f;
+	padding: 20px;
+	background-size: 32px;
+
+	&-title {
+		font-weight: 400;
+		letter-spacing: 0.5px;
+		margin: 0;
+	}
+}
+
+.menu-section {
+	margin: 25px 0;
+
+	&-title {
+		text-transform: uppercase;
+		color: #85888d;
+		font-weight: 200;
+		font-size: 13px;
+		letter-spacing: 1px;
+		padding: 0 20px;
+		margin: 0;
+	}
+}
+
+.menu-section-list {
+	padding: 0;
+	margin: 10px 0;
+	list-style: none;
+
+	p {
+		display: block;
+		padding: 10px 20px;
+	}
+}
+
+.panel {
+	text-align: center;
+	padding-top: 5px;
+	min-height: 100%;
+}
+
+#mocha {
+	text-align: left;
+	margin: 0 !important;
+}
+
+#mocha-stats {
+	top: 70px;
+}
+
+/**
+* Header
+*/
+.panel-header {
+	margin: 120px auto 55px;
+}
+
+.title {
+	font-size: 3.2em;
+	line-height: 1em;
+	margin: 0 0 15px;
+	color: #4B5;
+	font-weight: 400;
+}
+
+/**
+* hamburger
+*/
+.btn-hamburger {
+	border: none;
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	outline: none;
+	background: url('images/menu.png') no-repeat center;
+	width: 50px;
+	height: 50px;
+}
+
+/**
+* Boxes
+*/
+.box {
+	border: 1px solid #4b5;
+	border-radius: 4px;
+	text-align: left;
+	margin: 50px 10px;
+	position: relative;
+}
+
+.box:before,.box:after {
+	content: ' ';
+	display: inline-block;
+	width: 1px;
+	height: 50px;
+	border-left: 1px solid #4b5;
+	position: absolute;
+	left: 50%;
+}
+
+.box:before {
+	top: -50px;
+}
+
+.box:after {
+	bottom: -50px;
+}
+
+.box-title {
+	margin: 0;
+	padding: 10px 20px;
+	border-bottom: 1px solid #4b5;
+	color: #4b5;
+	font-size: 1.2em;
+	font-weight: 400;
+}
+
+.box-content {
+	padding: 20px;
+	background-color: #f8f8f8;
+}
+
+/**
+* Medium Screens
+*/
+@media all and (min-width:40em) {
+	.btn-hamburger {
+		top: 20px;
+		left: 30px;
+	}
+
+	.panel-header {
+		margin-top: 40px;
+		width: 455px;
+	}
+
+	.title {
+		font-size: 4.2em;
+	}
+}
+/**
+* Large Screens
+*/
+@media all and (min-width: 54em) {
+	.box {
+		width: 70%;
+		max-width: 1200px;
+		margin: 50px auto;
+	}
+}
+/**
+* Footer
+*/
+.panel-footer {
+	margin: 10px auto 20px;
+}
+
+.panel-footer p {
+	padding-bottom: 20px;
+}
+
+.heart {
+	font-style: normal;
+	font-weight: 500;
+	color: #c0392b;
+	text-decoration: none;
+}

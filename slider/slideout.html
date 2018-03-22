@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Slideout tests</title>
+  <script src="js/jquery-1.12.3.min.js"></script>
+  <script src="js/slideout.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="css/slideoutBase.min.css" />
+  <link type="text/css" rel="stylesheet" href="css/ripple.min.css" />
+  <link type="text/css" rel="stylesheet" href="css/slideout.min.css" />
+</head>
+
+<body>
+
+  <nav id="menu" class="menu">
+    <header class="menu-header">
+      <span class="menu-header-title">Tests</span>
+    </header>
+
+    <section class="menu-section">
+      <h3 class="menu-section-title">Docs</h3>
+      <ul class="menu-section-list">
+        <li>
+          <p class="ripple">Installation</p>
+        </li>
+        <li>
+          <p class="ripple">Usage</p>
+        </li>
+        <li>
+          <p class="ripple">API</p>
+        </li>
+        <li>
+          <p class="ripple">npm-scripts</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="menu-section">
+      <h3 class="menu-section-title">Docs</h3>
+      <ul class="menu-section-list">
+        <li>
+          <p class="ripple">Installation</p>
+        </li>
+        <li>
+          <p class="ripple">Usage</p>
+        </li>
+        <li>
+          <p class="ripple">API</p>
+        </li>
+        <li>
+          <p class="ripple">npm-scripts</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="menu-section">
+      <h3 class="menu-section-title">Docs</h3>
+      <ul class="menu-section-list">
+        <li>
+          <p class="ripple">Installation</p>
+        </li>
+        <li>
+          <p class="ripple">Usage</p>
+        </li>
+        <li>
+          <p class="ripple">API</p>
+        </li>
+        <li>
+          <p class="ripple">npm-scripts</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="menu-section">
+      <h3 class="menu-section-title">Docs</h3>
+      <ul class="menu-section-list">
+        <li>
+          <p class="ripple">Installation</p>
+        </li>
+        <li>
+          <p class="ripple">Usage</p>
+        </li>
+        <li>
+          <p class="ripple">API</p>
+        </li>
+        <li>
+          <p class="ripple">npm-scripts</p>
+        </li>
+      </ul>
+    </section>
+  </nav>
+
+  <div id="panel" class="panel">
+    <header class="panel-header">
+      <button class="btn-hamburger js-slideout-toggle"></button>
+      <h1 class="title">Slideout.js</h1>
+    </header>
+
+    <section class="box">
+      <h2 class="box-title ripple">Test</h2>
+      <h2 class="box-title ripple">Test</h2>
+      <h2 class="box-title ripple">Test</h2>
+      <h2 class="box-title ripple">Test</h2>
+      <h2 class="box-title ripple">Test</h2>
+      <h2 class="box-title ripple">Test</h2>
+      <h2 class="box-title ripple">Test</h2>
+      <h2 class="box-title ripple">Test</h2>
+      <h2 class="box-title ripple">Test</h2>
+      <div id="mocha" class="box-content"></div>
+    </section>
+
+    <footer class="panel-footer">
+      <p>with ❤ by Mango</p>
+    </footer>
+  </div>
+
+  <script>
+    var slideout = new Slideout({
+      'panel': document.getElementById('panel'),
+      'menu': document.getElementById('menu'),
+      'padding': 256,
+      'tolerance': 70
+    });
+    // https://www.cnblogs.com/chenguiya/p/4953953.html
+  </script>
+  
+</body>
+
+</html>
