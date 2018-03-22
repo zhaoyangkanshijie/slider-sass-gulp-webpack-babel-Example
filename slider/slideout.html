@@ -116,6 +116,8 @@
     </footer>
   </div>
 
+  <div class="material-design"></div>
+
   <script>
     var slideout = new Slideout({
       'panel': document.getElementById('panel'),
@@ -123,9 +125,74 @@
       'padding': 256,
       'tolerance': 70
     });
+    window.onload = function() {
+      document.querySelector('.js-slideout-toggle').addEventListener('click', function () {
+        slideout.toggle();
+      });
+    };
     // https://www.cnblogs.com/chenguiya/p/4953953.html
   </script>
-  
+  <style>
+    .material-design {
+        position: relative;
+        width:300px;
+        height:300px;
+        background-color:black;
+    }
+    .material-design canvas {
+        opacity: 0.25;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+  </style>
+  <script>
+      var centerX = 0,
+          centerY = 0,
+          color = "#ffffff",
+          context,
+          element,
+          radius = 0,
+
+      requestAnimFrame = function () {
+        return (
+          window.requestAnimationFrame ||
+          window.mozRequestAnimationFrame ||
+          window.oRequestAnimationFrame ||
+          window.msRequestAnimationFrame ||
+          function (callback) {
+            window.setTimeout(callback, 1000 / 60);
+          }
+        );
+      }(),
+
+      init = function () {
+        $('.material-design').on("click",function(e){
+          $(this).append("<canvas></canvas>");
+          let canvas = $(this).find("canvas");
+          canvas.css({"width":"100%","height":"100%"}).attr({"width": canvas.offsetWidth,"height": canvas.offsetHeight});
+          context = $(this).get(0).getContext('2d');
+          let radius = 0;
+          let centerX = e.offsetX;
+          let centerY = e.offsetY;
+          context.clearRect(0, 0, $(this).width(), $(this).height());
+          element = $(this);
+        });
+      },
+
+      draw = function () {
+        context.beginPath();
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+        context.fillStyle = color;
+        context.fill();
+        radius += 2;
+        if (radius < element.width()) {
+          requestAnimFrame(draw);
+        }
+      };
+
+    init();
+  </script>
 </body>
 
 </html>
