@@ -23,7 +23,6 @@ let canvasRipple = canvasRipple || ($ => {
 
   let buildRipple = () => {
     $('.canvasRipple').on("click",function(e){
-      console.log("aaa");
       $(this).append("<canvas></canvas>");
       element = $(this).find("canvas");
       element.css({ "width": "100%", "height": "100%", "opacity": opacity}).attr({ "width": element.get(0).offsetWidth, "height": element.get(0).offsetHeight });
