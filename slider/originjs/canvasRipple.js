@@ -22,20 +22,19 @@ let canvasRipple = canvasRipple || ($ => {
   }()
 
   let buildRipple = () => {
-    $('.canvasRipple').append("<canvas></canvas>");
-    let canvas = $('.canvasRipple').find("canvas");
-    canvas.css({ "width": "100%", "height": "100%", "opacity": opacity});
-    for (let i = 0; i < canvas.length; i++) {
-      canvas.eq(i).attr({ "width": canvas.eq(i).get(0).offsetWidth, "height": canvas.eq(i).get(0).offsetHeight });
-    }
-    $('.canvasRipple').find("canvas").on("click",function(e){
-      context = $(this).get(0).getContext('2d');
+    $('.canvasRipple').on("click",function(e){
+      console.log("aaa");
+      $(this).append("<canvas></canvas>");
+      element = $(this).find("canvas");
+      element.css({ "width": "100%", "height": "100%", "opacity": opacity}).attr({ "width": element.get(0).offsetWidth, "height": element.get(0).offsetHeight });
+
+      context = element.get(0).getContext('2d');
       radius = 0;
       centerX = e.offsetX;
       centerY = e.offsetY;
-      context.clearRect(0, 0, $(this).width(), $(this).height());
-      element = $(this);
+      context.clearRect(0, 0, element.width(), element.height());
       drawRipple();
+
     });
   }
 
@@ -54,6 +53,7 @@ let canvasRipple = canvasRipple || ($ => {
     }
     else{
       context.clearRect(0, 0, element.width(), element.height());
+      $('.canvasRipple canvas').unbind().remove();
     }
   }
 
