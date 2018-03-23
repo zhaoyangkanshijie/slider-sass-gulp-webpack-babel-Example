@@ -7,4 +7,4 @@
 /slider
 1. npm install
 2. gulp
-3. open slideSlider.html / fadeSlider.html / weixinSlider.html / ThreeDimansionSlider.html
+3. open slideSlider.html / fadeSlider.html / weixinSlider.html / ThreeDimansionSlider.html / slideout.html
