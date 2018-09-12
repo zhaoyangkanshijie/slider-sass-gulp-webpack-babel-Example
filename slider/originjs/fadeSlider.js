@@ -41,14 +41,16 @@ let slideSlider = slideSlider || ($ => {
 	//移动到指定屏
 	let fade_anim = ScreenNumber => {
 		//console.log("fade_anim");
-		for (let i = 1; i < slideLength; i++) {
+		$('.fade-slider .fade-slides .fade-slider-list').fadeOut(playTime);
+		$('.fade-slider .fade-slides .fade-slider-list').eq(ScreenNumber-1).fadeIn(playTime);
+		/* for (let i = 1; i < slideLength; i++) {
 			if(ScreenNumber == i){
 				$('.fade-slider .fade-slides .fade-slider-list').eq(ScreenNumber-1).fadeIn(playTime);
 			}
 			else{
 				$('.fade-slider .fade-slides .fade-slider-list').eq(i-1).fadeOut(playTime);
 			}
-		}
+		} */
 		turnTo(ScreenNumber);
 	}
 
