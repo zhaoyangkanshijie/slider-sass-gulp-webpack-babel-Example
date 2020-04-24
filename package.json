@@ -9,7 +9,7 @@
     "clean": "rimraf build",
     "build": "npm run clean && cross-env NODE_ENV=production webpack -p webpack.config.js"
   },
-  "author": "",
+  "author": "L",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.7.6",
